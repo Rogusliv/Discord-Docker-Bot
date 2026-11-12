@@ -102,10 +102,5 @@ On startup the bot logs the servers it loaded, connects to Discord, syncs its sl
 ## Security notes
 
 - Mounting `/var/run/docker.sock` gives the bot **full control of Docker on the host**. Only run this bot on a server you trust, keep your role checks configured, and keep the token private.
-- Keep `.env` out of version control. The included `.gitignore` already excludes it.
 - If your token is ever exposed, reset it immediately in the Developer Portal.
 - Startup auto-updates **every** server in `servers.json`, so pin image tags for anything you don't want updated.
-
-## License
-
-Add your license here (for example MIT).
