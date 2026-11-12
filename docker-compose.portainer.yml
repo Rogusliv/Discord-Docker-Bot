@@ -1,0 +1,33 @@
+# Portainer version. Does not use a .env file.
+# Set the variables in Portainer under: Stack -> Environment variables
+#   Required: BOT_TOKEN
+#   Optional: STATUS_CHANNEL_ID, GAME_ROLE_1, GAME_ROLE_2, JELLY_ROLE_1, JELLY_ROLE_2, TZ, KEEP_COUNT, JELLYFIN_COMPOSE_DIR
+#
+# This pulls the published image. No build step is needed.
+services:
+  server-bot:
+    image: ghcr.io/rogusliv/discord-docker-bot:latest
+    container_name: server-bot
+    restart: unless-stopped
+    environment:
+      - BOT_TOKEN=${BOT_TOKEN:?Set BOT_TOKEN in the stack environment variables}
+      - STATUS_CHANNEL_ID=${STATUS_CHANNEL_ID:-0}
+      - GAME_ROLE_1=${GAME_ROLE_1:-0}
+      - GAME_ROLE_2=${GAME_ROLE_2:-0}
+      - JELLY_ROLE_1=${JELLY_ROLE_1:-0}
+      - JELLY_ROLE_2=${JELLY_ROLE_2:-0}
+      - TZ=${TZ:-America/Chicago}
+      - KEEP_COUNT=${KEEP_COUNT:-8}
+      # Optional: uncomment only if you use JELLYFIN_COMPOSE_DIR
+      # - JELLYFIN_COMPOSE_DIR=${JELLYFIN_COMPOSE_DIR}
+    volumes:
+      # Lets the bot control Docker on the host
+      - /var/run/docker.sock:/var/run/docker.sock
+      # Your game save data (read-only). servers.json paths must start with /games_source
+      - /games:/games_source:ro
+      # Where backups are written on the host
+      - /games/backup:/games/backups
+      # Folder containing servers.json (use the full path on your host)
+      - /path/to/Server_Bot/config:/app/config
+      # Optional: only if you set JELLYFIN_COMPOSE_DIR=/jellyfin
+      # - /jellyfin:/jellyfin

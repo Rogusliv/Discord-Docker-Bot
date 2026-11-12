@@ -1,0 +1,21 @@
+# Standard Docker Compose version. Reads settings from the .env file next to this file.
+# Setup: copy .env.example to .env, fill it in, then run: docker compose up -d
+# (Pulls the published image. To build from source instead, run: docker compose up -d --build)
+services:
+  server-bot:
+    image: ghcr.io/rogusliv/discord-docker-bot:latest
+    build: .
+    container_name: server-bot
+    restart: unless-stopped
+    env_file: .env
+    volumes:
+      # Lets the bot control Docker on the host
+      - /var/run/docker.sock:/var/run/docker.sock
+      # Your game save data (read-only). servers.json paths must start with /games_source
+      - /games:/games_source:ro
+      # Where backups are written on the host
+      - /games/backup:/games/backups
+      # Folder containing servers.json
+      - ./config:/app/config
+      # Optional: only if you set JELLYFIN_COMPOSE_DIR=/jellyfin
+      # - /jellyfin:/jellyfin

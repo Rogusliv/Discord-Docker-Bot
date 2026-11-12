@@ -1,0 +1,4 @@
+{
+  "game_name": {"source": "/games_source/your/path", "container": "container-name"},
+  "container_without_backup": {"source": null, "container": "container-name"}
+}
